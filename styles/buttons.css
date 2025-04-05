@@ -1,0 +1,54 @@
+/* Default Button Style */
+button {
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #3498db;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  button:hover {
+    background: #2980b9;
+  }
+
+  /* Clear Button Style */
+  .clear-button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    display: inline-flex; /* Added for icon placement */
+    align-items: center; /* Added for icon placement */
+    gap: 8px; /* Added for icon spacing */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+  }
+  
+  .clear-button:hover {
+    background: #c0392b;
+  }
+
+   /* Delete Path Button Style */
+  .delete-recent {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    display: inline-flex; /* Added for icon placement */
+    align-items: center; /* Added for icon placement */
+    gap: 4px; /* Added for icon spacing */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .delete-recent:hover {
+    background: #c0392b;
+  }

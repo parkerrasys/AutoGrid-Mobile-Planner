@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoGrid Planner - Team 785Z</title>
+  <link rel="icon" type="image/x-icon" href="AutoGridLogo.ico">
+  <link rel="stylesheet" href="styles/theme.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="styles/bars.css">
+  <link rel="stylesheet" href="styles/buttons.css">//
+  <!-- Chromebook Screen -->
+  <!-- <link rel="stylesheet" href="chrombook.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-title">
+        <img class ="autogridlogo" id="logo" src="AutoGridLogoIntro.gif" alt="AutoGridLogo">
+        <!-- <img src="AutoGridLogoIntro.gif" alt="AutoGridLogo">
+        <img src="AutoGridAnimationLoop.gif" alt="AutoGridLogo"> -->
+                  <!-- <div class="top-bar">
+            Current Screen Size
+    <input type="text" id="screenSize" readonly>
+          </div> -->
+        <div class="title">AutoGrid Planner <span class="team-name">by team 785Z</span>
+          <div class="dropdown">
+            <a href="#" class="version-tag"><i class="fas fa-code-branch"></i> v0.1.2</a>
+            <div class="dropdown-content">
+              <a href="https://github.com/parkerrasys/AutoGrid-Planner" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>
+              <a href="https://github.com/parkerrasys/AutoGrid-Planner/releases" target="_blank"><i class="fas fa-tags"></i> Release Notes</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="github-link"><i class="fab fa-github"></i> AutoGrid</a>
+            <div class="dropdown-content">
+              <a href="https://github.com/parkerrasys/AutoGrid" target="_blank"><i class="fas fa-code"></i> Source Code</a>
+              <a href="https://github.com/parkerrasys/AutoGrid/issues" target="_blank"><i class="fas fa-bug"></i> Report Issues</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="doc-tag"><i class="fas fa-book"></i> Links</a>
+            <div class="dropdown-content">
+              <a href="documentation.html"><i class="fas fa-file-alt"></i> Documentation</a>
+              <a href="https://github.com/parkerrasys/AutoGrid-Planner/issues" target="_blank"><i class="fas fa-bug"></i> Bug Report</a>
+              <a href="tutorials.html"><i class="fas fa-graduation-cap"></i> Tutorials</a>
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div class="project-title">
+        Name:<span id="pathName" class="path-name" onclick="editPathName()" title="Click to edit">Untitled</span>
+        <div class="recent-paths-container">
+          <i class="fas fa-history"></i> Recent Paths: <select id="recentPaths" onchange="loadRecentPath(this.value)">
+            <option value="">Recent Paths</option>
+          </select>
+          <button class="delete-recent" onclick="deleteSelectedPath()"><i class="fas fa-trash-alt"></i> Delete</button>
+        </div>
+      </div>
+      <div class="header-buttons">
+        <button onclick="clearPath()"><i class="fas fa-plus"></i> New Path</button>
+        <button onclick="importPath()"><i class="fas fa-file-import"></i> Import Path</button>
+        <button onclick="importSharePath()"><i class="fas fa-share-alt"></i> Import Share Path</button>
+        <select id="themeSelector" onchange="changeTheme(this.value)">
+          <option value="dark">Default Dark</option>
+          <option value="light">Default Light</option>
+          <option value="midnight">Midnight Dream</option>
+          <option value="ocean">Ocean Breeze</option>
+          <option value="forest">Forest Mist</option>
+          <option value="sunset">Too Much Purple</option>
+          <option value="retro">Retro Wave</option>
+          <option value="nord">Classic Grey</option>
+          <option value="mocha">Midnight Purple</option>
+          <option value="cyber">Cyber Punk</option>
+          <option value="devpref">Dev's Preference</option>
+        </select>
+      </div>
+    </header>
+    <main>
+      <div class="left-sidebar">
+        <div class="top-bar">
+          <button onclick="undo()"><i class="fas fa-undo"></i> Undo</button>
+          <button onclick="redo()"><i class="fas fa-redo"></i> Redo</button>
+          <button onclick="clearCurrentPath()" class="clear-button"><i class="fas fa-trash"></i> Clear</button>
+        </div>
+        <div class="points-list" id="pointsList"></div>
+        <div class="bottom-bar">
+          <button onclick="exportPath()"><i class="fas fa-file-export"></i> Export</button>
+          <button onclick="sharePaths()"><i class="fas fa-share"></i> Share</button>
+          <button onclick="buildPath()"><i class="fas fa-hammer"></i> Build</button>
+        </div>
+      </div>
+      <div class="grid-container">
+            <div id="gridLoading" class="grid-loading">
+              <img src="loading.gif" alt="Loading..." />
+            </div>
+            <div class="grid-container-top-bars">
+          <!-- <div class="top-bar">
+            Current Screen Size
+    <input type="text" id="screenSize" readonly>
+          </div> -->
+          <div class="top-bar">
+            Path Type:
+            <select id="pathTypeSelector" onchange="changePathType(this.value)">
+              <option value="direct-path">Direct</option>
+              <option value="generate-best-path">Generate</option>
+            </select>
+          </div>
+          <div class="top-bar">
+            Field Type:
+            <select id="fieldSelector" onchange="changeField(this.value)">
+              <option value="field-competition">Competition Field</option>
+              <option value="field-skills">Skills Field</option>
+            </select>
+            <select id="gameSelector" onchange="changeGame(this.value)">
+              <option value="high_stakes">High Stakes (Current)</option>
+              <option value="over_under">Over Under</option>
+            </select>
+          </div>
+          <div class="top-bar">
+            Alliance Color:
+            <select id="allianceSelector" onchange="changeAllianceColor(this.value)">
+              <option value="red-alliance">Red</option>
+              <option value="blue-alliance">Blue</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-canvas">
+            
+            <div class="sidebar-organizer">
+              <div class="red-side-bar">
+                <div class="red-side-text">
+                  RED
+                </div>
+              </div>
+              <canvas id="grid"></canvas>
+              <div class="blue-side-bar">
+                <div class="blue-side-text">
+                  BLUE
+                </div>
+              </div>            
+            </div>
+        </div>
+      </div>
+      <div class="right-sidebar">
+        <div class="top-bar">
+          Robot Configuration Settings
+        </div>
+        <div class="robot-config">
+          <div class="robot-dimensions">
+            <div class="dimension-input">
+              <label>Length (inches):</label>
+              <input type="number" id="robotLength" value="18" min="5" max="18" step="0.5" onchange="updateRobotConfig()">
+            </div>
+            <div class="dimension-input">
+              <label>Width (inches):</label>
+              <input type="number" id="robotWidth" value="18" min="5" max="18" step="0.5" onchange="updateRobotConfig()">
+            </div>
+            <div class="dimension-input">
+              <label>Wheel Diameter (Inches):</label>
+              <input type="number" id="wheelDiameter" value="4" min="2" max="4" step=".25">
+            </div>
+            <div class="dimension-input">
+              <label>Move Speed (in/s):</label>
+              <input type="number" id="moveSpeed" value="50" min="1" max="200" step="1">
+            </div>
+            <div class="dimension-input">
+              <label>Turn Speed (deg/s):</label>
+              <input type="number" id="turnSpeed" value="180" min="1" max="720" step="1">
+            </div>
+            <div class="dimension-input">
+              <label>LookAt Pause (s):</label>
+              <input type="number" id="lookAtPause" value="0.5" min="0" max="5" step="0.1">
+            </div>
+          </div>
+          <div class="robot-diagram-container">
+            <canvas id="robotDiagram"></canvas>
+          </div>
+        </div>
+        <div class="bottom-bar">
+          <button onclick="simulatePath()" id="simButton"><i class="fas fa-play"></i> Simulate Path</button>
+          <button onclick="toggleSimulation()" id="pauseButton" style="display: none;"><i class="fas fa-pause"></i> Pause</button>
+          <button onclick="stopSimulation()" id="stopButton" style="display: none;"><i class="fas fa-stop"></i> Stop</button>
+          <button onclick="loopSimulation()" id="loopButton"><i class="fas fa-sync"></i> Loop: Off</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    const delay = 1250;
+    const preloadImage = new Image();
+
+    preloadImage.src = "AutoGridAnimationLoop.gif";
+
+    const logoElement = document.getElementById("logo");
+
+    setTimeout(() => {
+      logoElement.src = preloadImage.src;
+    }, delay);
+
+
+
+
+    const inputs = document.querySelectorAll('input[type="number"]');
+   //Scrolling for numbers (in here for editing/adjusting) 
+inputs.forEach((input) => {
+    input.addEventListener('wheel', (event) => {
+        event.preventDefault();
+        const step = parseFloat(input.step) || 1;
+        let currentValue = parseFloat(input.value) || 0;
+
+        if (event.deltaY < 0) {
+            input.value = Math.min(currentValue + step, parseFloat(input.max) || Infinity);
+        } else {
+            input.value = Math.max(currentValue - step, parseFloat(input.min) || -Infinity);
+        }
+        input.dispatchEvent(new Event('change'));
+    });
+});
+
+
+ // Get screen width and height
+ const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        // Display screen size in the text box
+        const textBox = document.getElementById("screenSize");
+        textBox.value = `Width: ${screenWidth}px, Height: ${screenHeight}px`;
+
+
+        document.addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  return false;
+}, true);
+  </script>
+</body>
+
+</html>
