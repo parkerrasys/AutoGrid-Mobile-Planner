@@ -86,7 +86,53 @@
     </main>
   </div>
   <script src="script.js"></script>
+  <script>
+    const delay = 1250;
+    const preloadImage = new Image();
 
+    preloadImage.src = "AutoGridAnimationLoop.gif";
+
+    const logoElement = document.getElementById("logo");
+
+    setTimeout(() => {
+      logoElement.src = preloadImage.src;
+    }, delay);
+
+
+
+
+    const inputs = document.querySelectorAll('input[type="number"]');
+   //Scrolling for numbers (in here for editing/adjusting) 
+inputs.forEach((input) => {
+    input.addEventListener('wheel', (event) => {
+        event.preventDefault();
+        const step = parseFloat(input.step) || 1;
+        let currentValue = parseFloat(input.value) || 0;
+
+        if (event.deltaY < 0) {
+            input.value = Math.min(currentValue + step, parseFloat(input.max) || Infinity);
+        } else {
+            input.value = Math.max(currentValue - step, parseFloat(input.min) || -Infinity);
+        }
+        input.dispatchEvent(new Event('change'));
+    });
+});
+
+
+ // Get screen width and height
+ const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        // Display screen size in the text box
+        const textBox = document.getElementById("screenSize");
+        textBox.value = `Width: ${screenWidth}px, Height: ${screenHeight}px`;
+
+
+        document.addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+  return false;
+}, true);
+  </script>
 </body>
 
 </html>
